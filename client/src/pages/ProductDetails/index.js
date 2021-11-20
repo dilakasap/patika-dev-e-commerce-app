@@ -9,7 +9,7 @@ import { useCart } from "../../contexts/CartContext";
 
 function ProductDetails() {
   const { product_id } = useParams();
-  const { addToCart } = useCart();
+  const { addToCart, items } = useCart();
   const { isLoading, isError, data } = useQuery(["product", product_id], () =>
     getProductDetails(product_id)
   );
@@ -22,10 +22,11 @@ function ProductDetails() {
   console.log(data);
 
   const images = data.photos.map((url) => ({ original: url }));
+  const findCartItem = items.find((item) => item._id === product_id);
   return (
     <div>
       <Button colorScheme="telegram" onClick={() => addToCart(data)}>
-        Add to Cart
+        {findCartItem ? "Remove from Cart" : "Add to Cart"}
       </Button>
       <Text as="h2" fontSize="2xl">
         {data.title}
