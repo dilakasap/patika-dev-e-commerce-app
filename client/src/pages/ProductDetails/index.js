@@ -25,7 +25,10 @@ function ProductDetails() {
   const findCartItem = items.find((item) => item._id === product_id);
   return (
     <div>
-      <Button colorScheme="telegram" onClick={() => addToCart(data)}>
+      <Button
+        colorScheme={findCartItem ? "pink" : "green"}
+        onClick={() => addToCart(data, findCartItem)}
+      >
         {findCartItem ? "Remove from Cart" : "Add to Cart"}
       </Button>
       <Text as="h2" fontSize="2xl">

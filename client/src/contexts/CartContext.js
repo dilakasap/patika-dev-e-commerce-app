@@ -4,8 +4,13 @@ const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [items, setItems] = useState([]);
 
-  const addToCart = (data) => {
-    setItems((prev) => [...prev, data]);
+  const addToCart = (data, findCartItem) => {
+    if (!findCartItem) {
+      return setItems((items) => [data, ...items]);
+    }
+
+    const filtered = items.filter((item) => item._id !== findCartItem._id);
+    setItems(filtered);
   };
 
   const values = {
