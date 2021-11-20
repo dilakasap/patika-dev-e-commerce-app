@@ -3,7 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "./styles.module.css";
 import { Button } from "@chakra-ui/react";
 import { useAuth } from "../../contexts/AuthContext";
+import { useCart } from "../../contexts/CartContext";
 function Navbar() {
+  const { items } = useCart();
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
   return (
@@ -28,10 +30,20 @@ function Navbar() {
               Login
             </Button>
           </>
-        ):
-        <Button onClick={()=> navigate("/profile")}>Profile</Button>
-        }
-
+        ) : (
+          <>
+            {items.length > 0 && (
+              <Button
+                onClick={() => navigate("/cart")}
+                colorScheme="pink"
+                variant="outline"
+              >
+                Cart {items.length}
+              </Button>
+            )}
+            <Button onClick={() => navigate("/profile")}>Profile</Button>
+          </>
+        )}
       </div>
     </nav>
   );
