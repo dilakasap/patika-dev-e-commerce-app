@@ -38,6 +38,7 @@ function Cart() {
             ))}
           </ul>
           <Box mt="10">
+            <Button colorScheme="green" mt="2" size="sm">Order</Button>
             <Text fontSize="22">Total:{total} TL</Text>
           </Box>
         </>
