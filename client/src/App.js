@@ -8,6 +8,7 @@ import ProductDetails from "./pages/ProductDetails";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import Cart from "./pages/Cart";
 import Error404 from "./pages/Error404";
+import Admin from "./pages/Admin";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/product/:product_id" element={<ProductDetails />} />
             <Route path="/profile" element={<ProtectedRoute />} />
             <Route path="*" element={<Error404/>}/>
+            <Route path="/admin" element={<Admin/>}></Route>
           </Routes>
         </div>
       </div>
