@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./styles.module.css";
 import { Button } from "@chakra-ui/react";
@@ -6,7 +6,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useCart } from "../../contexts/CartContext";
 function Navbar() {
   const { items } = useCart();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, user } = useAuth();
   const navigate = useNavigate();
   return (
     <nav className={styles.nav}>
@@ -41,6 +41,10 @@ function Navbar() {
                 Cart {items.length}
               </Button>
             )}
+            {
+              user?.role === "admin" && 
+              <Button colorScheme="pink" onClick={()=> navigate("/admin")} variant="ghost">Admin</Button>
+            }
             <Button onClick={() => navigate("/profile")}>Profile</Button>
           </>
         )}
