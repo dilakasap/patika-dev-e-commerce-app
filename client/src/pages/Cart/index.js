@@ -22,25 +22,23 @@ import {
 import { postOrder } from "../../helpers/Api";
 
 function Cart() {
-  const [address,setAddress]= useState("");
-  const { items, removeFromCart } = useCart();
+  const [address, setAddress] = useState("");
+  const { items, removeFromCart, clearCart } = useCart();
   const initialRef = useRef();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const total = items.reduce((acc, obj) => acc + obj.price, 0);
 
-  const handleSubmitForm = async () =>{
-    const itemIds = items.map((item)=> item._id);
+  const handleSubmitForm = async () => {
+    const itemIds = items.map((item) => item._id);
 
-    const input= {
+    const input = {
       address,
       items: JSON.stringify(itemIds),
-    }
-
-    const response = await postOrder(input);
-    console.log(response);
-  }
-
-  
+    };
+    await postOrder(input);
+    clearCart();
+    onClose();
+  };
 
   return (
     <Box p="5">
@@ -79,11 +77,7 @@ function Cart() {
             Order
           </Button>
 
-          <Modal
-            initialFocusRef={initialRef}
-            isOpen={isOpen}
-            onClose={onClose}
-          >
+          <Modal initialFocusRef={initialRef} isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent>
               <ModalHeader>Order</ModalHeader>
@@ -91,7 +85,12 @@ function Cart() {
               <ModalBody pb={6}>
                 <FormControl>
                   <FormLabel>Address</FormLabel>
-                  <Textarea ref={initialRef} placeholder="Address"  value={address} onChange={(e)=> setAddress(e.target.value)}/>
+                  <Textarea
+                    ref={initialRef}
+                    placeholder="Address"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                  />
                 </FormControl>
               </ModalBody>
 
