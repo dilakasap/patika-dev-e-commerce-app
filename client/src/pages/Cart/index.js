@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useCart } from "../../contexts/CartContext";
 import {
   Button,
@@ -17,14 +17,30 @@ import {
   ModalCloseButton,
   FormControl,
   FormLabel,
-  Input,
+  Textarea,
 } from "@chakra-ui/react";
+import { postOrder } from "../../helpers/Api";
 
 function Cart() {
+  const [address,setAddress]= useState("");
   const { items, removeFromCart } = useCart();
   const initialRef = useRef();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const total = items.reduce((acc, obj) => acc + obj.price, 0);
+
+  const handleSubmitForm = async () =>{
+    const itemIds = items.map((item)=> item._id);
+
+    const input= {
+      address,
+      items: JSON.stringify(itemIds),
+    }
+
+    const response = await postOrder(input);
+    console.log(response);
+  }
+
+  
 
   return (
     <Box p="5">
@@ -70,17 +86,17 @@ function Cart() {
           >
             <ModalOverlay />
             <ModalContent>
-              <ModalHeader>Create your account</ModalHeader>
+              <ModalHeader>Order</ModalHeader>
               <ModalCloseButton />
               <ModalBody pb={6}>
                 <FormControl>
-                  <FormLabel>First name</FormLabel>
-                  <Input ref={initialRef} placeholder="First name" />
+                  <FormLabel>Address</FormLabel>
+                  <Textarea ref={initialRef} placeholder="Address"  value={address} onChange={(e)=> setAddress(e.target.value)}/>
                 </FormControl>
               </ModalBody>
 
               <ModalFooter>
-                <Button colorScheme="blue" mr={3}>
+                <Button onClick={handleSubmitForm} colorScheme="blue" mr={3}>
                   Save
                 </Button>
                 <Button onClick={onClose}>Cancel</Button>
