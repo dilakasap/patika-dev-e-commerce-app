@@ -1,10 +1,12 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 
 function Admin() {
+  const {user} = useAuth();
   return (
+    user.role==="admin" ?
     <div>
-      
       <nav>
         <ul className='admin-menu'>
           <li>
@@ -14,6 +16,8 @@ function Admin() {
       </nav>
 
     </div>
+    :
+    <Navigate to="/"/>
   )
 }
 
